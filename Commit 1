@@ -1,65 +1,58 @@
 void setup() {
     size(500, 500);
-    textSize(32);  // Set text size for better clarity
+    textSize(32);  // Set text size for clarity
     fill(0);       // Set text color to black
     background(255);
 
-    // 2D array of numbers 1 to 8, repeating
-    int[][] grid = {
-        {1, 2, 3, 4},
-        {3, 1, 2, 4},
-        {5, 6, 7, 8},
-        {8, 6, 5, 7}
-    };  // Set values as desired
+    // 2D array for numbers 1 to 8, repeating
+    int[][] grid = new int[4][4]; // Create a 4x4 array
 
-    shuffleGrid(grid);  // Shuffle numbers in the grid
-
-    int rows = grid.length;
-    int cols = grid[0].length;
-
-    int i = 0;
-    while (i < rows) {
-        int j = 0;
-        while (j < cols) {
-            // Draw numbers instead of lines
-            draw_numbers(10 + j * (width / cols), 10 + i * (height / rows), grid[i][j]);
-            println(i, j, grid[i][j]);
-            j++;
-        }
-        i++;
-    }
-}
-
-void shuffleGrid(int[][] grid) {
-    // Shuffle the positions of the numbers in the grid
-    int totalElements = grid.length * grid[0].length;
-    int[] temp = new int[totalElements];
+    // Fill numbers 1-8, repeating twice
+    int[] temp = {1, 1, 2, 2, 3, 3, 4, 4, 
+                  5, 5, 6, 6, 7, 7, 8, 8};
     
-    // Fill numbers 1-8, repeating twice in temp
-    for (int i = 0; i < 8; i++) {
-        temp[i * 2] = i + 1;
-        temp[i * 2 + 1] = i + 1;
-    }
+    // Shuffle numbers in temp
+    shuffleArray(temp);
 
-    // Shuffle the numbers in temp
-    for (int i = 0; i < totalElements; i++) {
-        int randomIndex = (int) random(totalElements);
-        // Swap positions
-        int tempValue = temp[i];
-        temp[i] = temp[randomIndex];
-        temp[randomIndex] = tempValue;
-    }
-
-    // Fill the values back into the grid
+    // Fill values into the grid
     int index = 0;
     for (int i = 0; i < grid.length; i++) {
         for (int j = 0; j < grid[0].length; j++) {
             grid[i][j] = temp[index++];
         }
     }
+
+    int cellSize = width / grid[0].length; // Size of each cell
+    int i = 0;
+    while (i < grid.length) {
+        int j = 0;
+        while (j < grid[0].length) {
+            // Draw grid and display numbers
+            draw_cell(10 + j * cellSize, 10 + i * cellSize, grid[i][j]);
+            j++;
+        }
+        i++;
+    }
 }
 
-void draw_numbers(int x, int y, int n) {
-    // Draw numbers at the specified position
-    text(n, x + 10, y + 30);  // Adjust the position of the number appropriately
+void shuffleArray(int[] array) {
+    for (int i = 0; i < array.length; i++) {
+        int randomIndex = (int) random(array.length);
+        // Swap positions
+        int tempValue = array[i];
+        array[i] = array[randomIndex];
+        array[randomIndex] = tempValue;
+    }
+}
+
+void draw_cell(int x, int y, int n) {
+    // Draw the cell border
+    stroke(0);
+    fill(200);
+    rect(x, y, width / 4, height / 4); // Size of the cell
+
+    // Draw the number in the cell
+    fill(0);  // Set text color to black
+    textAlign(CENTER, CENTER); // Center the text within the cell
+    text(n, x + (width / 8), y + (height / 8)); // Position the text in the center of the cell
 }
