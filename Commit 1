@@ -22,3 +22,13 @@ void setup() {
         i++;
     }
 }
+
+void draw_lines(int x, int y, int n){
+    int i = 0;
+    while (i < n) {
+     
+        line(x + i*20 , y, x + i*20, y + 40);
+        i++;
+
+    }
+}
